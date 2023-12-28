@@ -1,11 +1,13 @@
 pub mod calculation_interpreter {
     use std::collections::HashMap;
+    use std::time::Instant;
     use crate::calculator::calculator::{Brackets, CalculationElement, SingleBracket};
     //<>
     //(1+(1+4))
 
 
     pub fn calculate_string(calculation: &str) {
+        let start_time = Instant::now();
         let calc = remove_whitespaces(calculation);
 
         let mut no_bracket_calc = process_brackets(calc);
@@ -16,11 +18,14 @@ pub mod calculation_interpreter {
         let brackets = Brackets::new(opening_bracket, closing_bracket, no_bracket_calc);
         let value = brackets.calculate_bracket();
 
-        println!("Finished calculating... Solution is: \n {}", value.to_string());
+        let elapsed_time = start_time.elapsed().as_micros();
+
+
+        println!("Finished calculating... Solution is: \n{} \nit took {} MICRO-SECONDS to calculate", value.to_string(), elapsed_time);
     }
 
     fn process_brackets (mut string: String) -> String {
-        println!("processing brackets for string: \n {}", string);
+        println!("processing brackets for string: \n{}", string);
         let mut opening_bracket_index: u128 = 0;
         let mut closing_bracket_index: u128 = 0;
 
@@ -54,11 +59,11 @@ pub mod calculation_interpreter {
             string.remove(opening_bracket_index as usize);
         }
 
-        println!("Removed bracket from string!\n {}\n", string);
+        println!("Removed bracket from string!\n{}\n", string);
 
         string.insert_str(opening_bracket_index as usize, &bracket_value.to_string());
 
-        println!("Injected value into string! \n {}\n", string);
+        println!("Injected value into string! \n{}\n", string);
 
         return process_brackets(string)
     }
