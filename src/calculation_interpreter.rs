@@ -8,7 +8,7 @@ pub mod calculation_interpreter {
     pub fn calculate_string(calculation: &str) {
         let calc = remove_whitespaces(calculation);
 
-        let mut no_bracket_calc = process_brackets(calc, 0);
+        let mut no_bracket_calc = process_brackets(calc);
         no_bracket_calc = remove_whitespaces(&no_bracket_calc);
 
         let opening_bracket = SingleBracket::new();
@@ -19,16 +19,14 @@ pub mod calculation_interpreter {
         println!("Finished calculating... Solution is: \n {}", value.to_string());
     }
 
-    fn process_brackets (mut string: String, depth: u128) -> String {
+    fn process_brackets (mut string: String) -> String {
         println!("processing brackets for string: \n {}", string);
-        let mut bracket_depth: u128 = depth;
         let mut opening_bracket_index: u128 = 0;
         let mut closing_bracket_index: u128 = 0;
 
         for (index, char) in string.char_indices() {
             if is_bracket(char) && !is_closing_bracket(char) {
                 opening_bracket_index = index as u128;
-                bracket_depth+=1;
                 continue;
             }
 
@@ -62,7 +60,7 @@ pub mod calculation_interpreter {
 
         println!("Injected value into string! \n {}\n", string);
 
-        return process_brackets(string, bracket_depth)
+        return process_brackets(string)
     }
 
     fn remove_whitespaces(string: &str) -> String {
