@@ -63,12 +63,12 @@ pub mod calculator {
         calculation_elements
     }
 
-    pub fn calculate_calc_elements(elements: Vec<CalculationElement>, brackets: &Brackets) -> f64{
+    pub fn calculate_calc_elements(elements: Vec<CalculationElement>) -> f64{
         let mut elements = elements.clone();
 
-        elements = calculate_all_priority_operators(elements, brackets);
+        elements = calculate_all_priority_operators(elements);
 
-        elements = calculate_all_default_operators(elements, brackets);
+        elements = calculate_all_default_operators(elements);
 
         if elements.len() == 1 {
             return elements.get(0).unwrap().char.parse::<f64>().unwrap()
@@ -77,7 +77,7 @@ pub mod calculator {
         }
     }
 
-    fn calculate_all_priority_operators(mut elements: Vec<CalculationElement>, brackets: &Brackets) -> Vec<CalculationElement> {
+    fn calculate_all_priority_operators(mut elements: Vec<CalculationElement>) -> Vec<CalculationElement> {
         let mut operation_index: usize = 0;
 
         for (index, element) in elements.iter().enumerate() {
@@ -103,10 +103,10 @@ pub mod calculator {
         let new_calc_element = CalculationElement::new(ElementType::Number, value.to_string());
         elements.splice(operation_index - 1 .. operation_index + 2, vec![new_calc_element]);
 
-        calculate_all_priority_operators(elements, brackets)
+        calculate_all_priority_operators(elements)
     }
 
-    fn calculate_all_default_operators(mut elements: Vec<CalculationElement>, brackets: &Brackets) -> Vec<CalculationElement> {
+    fn calculate_all_default_operators(mut elements: Vec<CalculationElement>) -> Vec<CalculationElement> {
         let mut operation_index: usize = 0;
 
         for (index, element) in elements.iter().enumerate() {
@@ -129,7 +129,7 @@ pub mod calculator {
         let new_calc_element = CalculationElement::new(ElementType::Number, value.to_string());
         elements.splice(operation_index - 1 .. operation_index + 2, vec![new_calc_element]);
 
-        calculate_all_default_operators(elements, brackets)
+        calculate_all_default_operators(elements)
     }
 
     #[derive(Clone)]
@@ -177,35 +177,10 @@ pub mod calculator {
         element_collection
     }
 
-    pub struct SingleBracket {
-    }
+    pub fn calculate(content: &String) -> f64 {
+        let calculation_elements = string_to_calculation_parts(content);
 
-    impl SingleBracket {
-        pub fn new () -> SingleBracket {
-            SingleBracket {}
-        }
-
-    }
-
-   pub struct Brackets {
-        start_bracket: SingleBracket,
-        end_bracket: SingleBracket,
-        content: String,
-    }
-
-    impl Brackets {
-        pub fn new (start_bracket: SingleBracket, end_bracket: SingleBracket, content: String) -> Brackets {
-            Brackets{
-                start_bracket, end_bracket, content,
-            }
-        }
-
-        pub fn calculate_bracket(&self) -> f64 {
-            let content = &self.content;
-            let calculation_elements = string_to_calculation_parts(content);
-
-            calculate_calc_elements(calculation_elements, &self)
-        }
+        calculate_calc_elements(calculation_elements)
     }
 
     fn is_number(string: &String) -> bool {

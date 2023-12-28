@@ -1,7 +1,7 @@
 pub mod calculation_interpreter {
     use std::collections::HashMap;
     use std::time::Instant;
-    use crate::calculator::calculator::{Brackets, CalculationElement, SingleBracket};
+    use crate::calculator::calculator::{calculate, CalculationElement};
     //<>
     //(1+(1+4))
 
@@ -13,10 +13,7 @@ pub mod calculation_interpreter {
         let mut no_bracket_calc = process_brackets(calc);
         no_bracket_calc = remove_whitespaces(&no_bracket_calc);
 
-        let opening_bracket = SingleBracket::new();
-        let closing_bracket = SingleBracket::new();
-        let brackets = Brackets::new(opening_bracket, closing_bracket, no_bracket_calc);
-        let value = brackets.calculate_bracket();
+        let value = calculate(&no_bracket_calc);
 
         let elapsed_time = start_time.elapsed().as_micros();
 
@@ -44,14 +41,11 @@ pub mod calculation_interpreter {
             return string
         }
 
-        let opening_bracket = SingleBracket::new();
-        let closing_bracket = SingleBracket::new();
         let content: String = string[(opening_bracket_index + 1) as usize .. (closing_bracket_index) as usize].to_string();
-        let brackets = Brackets::new(opening_bracket, closing_bracket, content.clone());
 
         println!("bracket information: open: {}   closed: {}", opening_bracket_index, closing_bracket_index);
         println!("Content of bracket: {}", content);
-        let bracket_value = brackets.calculate_bracket();
+        let bracket_value = calculate(&content);
 
         println!("Done calculating value: {}", bracket_value);
 
