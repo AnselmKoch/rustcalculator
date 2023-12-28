@@ -33,7 +33,7 @@ pub mod calculator {
             let is_operation_char = CalculationOperation::operation_from_char(&String::from(char)) != CalculationOperation::Null;
 
             if index == content.len() - 1 {
-                if (is_operation_char) {
+                if is_operation_char {
                     calculation_elements.push(CalculationElement::new(ElementType::Number, current_number_cache.clone()));
                     calculation_elements.push(CalculationElement::new(ElementType::Operation, String::from(char)));
                     continue;
@@ -91,7 +91,7 @@ pub mod calculator {
             break;
         }
 
-        if (operation_index == 0) {
+        if operation_index == 0 {
             return elements;
         }
 
@@ -117,7 +117,7 @@ pub mod calculator {
             break;
         }
 
-        if (operation_index == 0) {
+        if operation_index == 0 {
             return elements;
         }
 
@@ -166,16 +166,6 @@ pub mod calculator {
         }
     }
 
-
-    fn string_to_calculation(calculation: &str) -> Vec<CalculationPart> {
-        let element_collection = Vec::new();
-
-        for char in calculation.chars() {
-
-        }
-
-        element_collection
-    }
 
     pub fn calculate(content: &String) -> f64 {
         let calculation_elements = string_to_calculation_parts(content);

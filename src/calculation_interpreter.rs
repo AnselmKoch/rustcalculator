@@ -1,7 +1,6 @@
 pub mod calculation_interpreter {
-    use std::collections::HashMap;
     use std::time::Instant;
-    use crate::calculator::calculator::{calculate, CalculationElement};
+    use crate::calculator::calculator::{calculate};
     //<>
     //(1+(1+4))
 
